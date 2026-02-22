@@ -75,7 +75,7 @@ npx @modelcontextprotocol/inspector homebridge-mcp-server
 
 | Tool | Description |
 |------|-------------|
-| `list_accessories` | List all accessories with current state |
+| `list_accessories` | List all accessories with current state. Supports filtering by `room`, `type`, `name`, `manufacturer`, and `excludeManufacturer` |
 | `get_accessory` | Get detailed info for a specific accessory |
 | `set_accessory` | Control an accessory (on/off, brightness, temperature, etc.) |
 | `get_accessory_layout` | Get the room layout from the Homebridge UI |
@@ -85,7 +85,7 @@ npx @modelcontextprotocol/inspector homebridge-mcp-server
 | Tool | Description |
 |------|-------------|
 | `get_homebridge_status` | Check if Homebridge is running |
-| `get_server_status` | Get server version, uptime, Node.js version |
+| `get_server_status` | Get server version, uptime, Node.js version, OS details, and instance ID |
 | `restart_homebridge` | Restart the Homebridge service |
 | `get_pairing_info` | Get HomeKit pairing code / QR info |
 | `get_cached_accessories` | List cached accessories |
@@ -131,10 +131,16 @@ Once configured, you can ask Claude things like:
 ## Development
 
 ```bash
-git clone https://github.com/your-org/homebridge-mcp-server.git
+git clone https://github.com/mp-consulting/homebridge-mcp-server.git
 cd homebridge-mcp-server
 npm install
 npm run build
+```
+
+```bash
+npm run dev          # Run with auto-reload (tsx)
+npm test             # Run tests
+npm run test:watch   # Run tests in watch mode
 ```
 
 ## License

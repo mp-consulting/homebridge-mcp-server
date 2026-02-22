@@ -11,7 +11,7 @@ import { register as registerSystem } from "./tools/system.js";
 
 const server = new McpServer({
   name: "homebridge-mcp-server",
-  version: "1.0.0",
+  version: "1.0.1",
 });
 
 const client = new HomebridgeClient();
