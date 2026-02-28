@@ -26,6 +26,10 @@
   ],
   "author": "MP Consulting",
   "license": "MIT",
+  "funding": {
+    "type": "paypal",
+    "url": "https://paypal.me/mickaelpalma"
+  },
   "files": [
     "dist"
   ],
