@@ -1,6 +1,6 @@
-import { z } from "zod";
-import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import type { HomebridgeClient } from "../homebridge-client.js";
+import { z } from 'zod';
+import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import type { HomebridgeClient } from '../homebridge-client.js';
 
 interface RawAccessory {
   uniqueId: string;
@@ -29,14 +29,14 @@ function compactAccessory(acc: RawAccessory) {
 
 export function register(server: McpServer, client: HomebridgeClient): void {
   server.tool(
-    "list_accessories",
-    "List all Homebridge accessories with their current state (on/off, brightness, temperature, etc.)",
+    'list_accessories',
+    'List all Homebridge accessories with their current state (on/off, brightness, temperature, etc.)',
     {
-      room: z.string().optional().describe("Filter by room name (case-insensitive)"),
+      room: z.string().optional().describe('Filter by room name (case-insensitive)'),
       type: z.string().optional().describe("Filter by accessory type (e.g. 'Lightbulb', 'Switch', 'Thermostat')"),
-      manufacturer: z.string().optional().describe("Filter by manufacturer (case-insensitive, contains match)"),
-      excludeManufacturer: z.string().optional().describe("Exclude accessories from this manufacturer (case-insensitive, contains match)"),
-      name: z.string().optional().describe("Filter by service name (case-insensitive, contains match)"),
+      manufacturer: z.string().optional().describe('Filter by manufacturer (case-insensitive, contains match)'),
+      excludeManufacturer: z.string().optional().describe('Exclude accessories from this manufacturer (case-insensitive, contains match)'),
+      name: z.string().optional().describe('Filter by service name (case-insensitive, contains match)'),
     },
     async ({ room, type, manufacturer, excludeManufacturer, name }) => {
       try {
@@ -50,7 +50,7 @@ export function register(server: McpServer, client: HomebridgeClient): void {
           );
           if (!matchedRoom) {
             return {
-              content: [{ type: "text", text: `Room not found: "${room}". Available rooms: ${layout.map((r) => r.name).join(", ")}` }],
+              content: [{ type: 'text', text: `Room not found: "${room}". Available rooms: ${layout.map((r) => r.name).join(', ')}` }],
               isError: true,
             };
           }
@@ -87,11 +87,11 @@ export function register(server: McpServer, client: HomebridgeClient): void {
 
         const compact = accessories.map(compactAccessory);
         return {
-          content: [{ type: "text", text: JSON.stringify(compact, null, 2) }],
+          content: [{ type: 'text', text: JSON.stringify(compact, null, 2) }],
         };
       } catch (error) {
         return {
-          content: [{ type: "text", text: `Error listing accessories: ${error}` }],
+          content: [{ type: 'text', text: `Error listing accessories: ${error}` }],
           isError: true,
         };
       }
@@ -99,9 +99,9 @@ export function register(server: McpServer, client: HomebridgeClient): void {
   );
 
   server.tool(
-    "get_accessory",
-    "Get detailed information about a specific accessory by its uniqueId. Use list_accessories first to find the uniqueId.",
-    { uniqueId: z.string().describe("The unique identifier of the accessory") },
+    'get_accessory',
+    'Get detailed information about a specific accessory by its uniqueId. Use list_accessories first to find the uniqueId.',
+    { uniqueId: z.string().describe('The unique identifier of the accessory') },
     async ({ uniqueId }) => {
       try {
         const accessories = await client.getAccessories();
@@ -110,16 +110,16 @@ export function register(server: McpServer, client: HomebridgeClient): void {
         );
         if (!accessory) {
           return {
-            content: [{ type: "text", text: `Accessory not found with uniqueId: ${uniqueId}` }],
+            content: [{ type: 'text', text: `Accessory not found with uniqueId: ${uniqueId}` }],
             isError: true,
           };
         }
         return {
-          content: [{ type: "text", text: JSON.stringify(accessory, null, 2) }],
+          content: [{ type: 'text', text: JSON.stringify(accessory, null, 2) }],
         };
       } catch (error) {
         return {
-          content: [{ type: "text", text: `Error getting accessory: ${error}` }],
+          content: [{ type: 'text', text: `Error getting accessory: ${error}` }],
           isError: true,
         };
       }
@@ -127,10 +127,10 @@ export function register(server: McpServer, client: HomebridgeClient): void {
   );
 
   server.tool(
-    "set_accessory",
-    "Control a Homebridge accessory — turn it on/off, set brightness, color temperature, etc. Use list_accessories first to find the uniqueId and available characteristicTypes.",
+    'set_accessory',
+    'Control a Homebridge accessory — turn it on/off, set brightness, color temperature, etc. Use list_accessories first to find the uniqueId and available characteristicTypes.',
     {
-      uniqueId: z.string().describe("The unique identifier of the accessory"),
+      uniqueId: z.string().describe('The unique identifier of the accessory'),
       characteristicType: z
         .string()
         .describe(
@@ -138,17 +138,17 @@ export function register(server: McpServer, client: HomebridgeClient): void {
         ),
       value: z
         .union([z.string(), z.number(), z.boolean()])
-        .describe("The value to set (e.g. true/false for On, 0-100 for Brightness)"),
+        .describe('The value to set (e.g. true/false for On, 0-100 for Brightness)'),
     },
     async ({ uniqueId, characteristicType, value }) => {
       try {
         const result = await client.setAccessoryCharacteristic(uniqueId, characteristicType, value);
         return {
-          content: [{ type: "text", text: JSON.stringify(result, null, 2) }],
+          content: [{ type: 'text', text: JSON.stringify(result, null, 2) }],
         };
       } catch (error) {
         return {
-          content: [{ type: "text", text: `Error setting accessory: ${error}` }],
+          content: [{ type: 'text', text: `Error setting accessory: ${error}` }],
           isError: true,
         };
       }
@@ -156,8 +156,8 @@ export function register(server: McpServer, client: HomebridgeClient): void {
   );
 
   server.tool(
-    "get_accessory_layout",
-    "Get the accessories room layout as configured in the Homebridge UI.",
+    'get_accessory_layout',
+    'Get the accessories room layout as configured in the Homebridge UI.',
     {},
     async () => {
       try {
@@ -177,19 +177,19 @@ export function register(server: McpServer, client: HomebridgeClient): void {
             const acc = accessoryMap.get(svc.uniqueId);
             return {
               uniqueId: svc.uniqueId,
-              serviceName: acc?.serviceName ?? svc.customName ?? "Unknown",
-              type: acc?.type ?? "Unknown",
+              serviceName: acc?.serviceName ?? svc.customName ?? 'Unknown',
+              type: acc?.type ?? 'Unknown',
               manufacturer: acc?.accessoryInformation?.Manufacturer ?? null,
             };
           }),
         }));
 
         return {
-          content: [{ type: "text", text: JSON.stringify(enriched, null, 2) }],
+          content: [{ type: 'text', text: JSON.stringify(enriched, null, 2) }],
         };
       } catch (error) {
         return {
-          content: [{ type: "text", text: `Error getting layout: ${error}` }],
+          content: [{ type: 'text', text: `Error getting layout: ${error}` }],
           isError: true,
         };
       }

@@ -1,21 +1,21 @@
-import { z } from "zod";
-import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import type { HomebridgeClient } from "../homebridge-client.js";
+import { z } from 'zod';
+import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import type { HomebridgeClient } from '../homebridge-client.js';
 
 export function register(server: McpServer, client: HomebridgeClient): void {
   server.tool(
-    "list_plugins",
-    "List all currently installed Homebridge plugins with their versions and update status.",
+    'list_plugins',
+    'List all currently installed Homebridge plugins with their versions and update status.',
     {},
     async () => {
       try {
         const plugins = await client.getPlugins();
         return {
-          content: [{ type: "text", text: JSON.stringify(plugins, null, 2) }],
+          content: [{ type: 'text', text: JSON.stringify(plugins, null, 2) }],
         };
       } catch (error) {
         return {
-          content: [{ type: "text", text: `Error listing plugins: ${error}` }],
+          content: [{ type: 'text', text: `Error listing plugins: ${error}` }],
           isError: true,
         };
       }
@@ -23,8 +23,8 @@ export function register(server: McpServer, client: HomebridgeClient): void {
   );
 
   server.tool(
-    "search_plugins",
-    "Search the npm registry for Homebridge plugins matching a query.",
+    'search_plugins',
+    'Search the npm registry for Homebridge plugins matching a query.',
     {
       query: z.string().describe("Search query (e.g. 'hue', 'camera', 'thermostat')"),
     },
@@ -32,11 +32,11 @@ export function register(server: McpServer, client: HomebridgeClient): void {
       try {
         const results = await client.searchPlugins(query);
         return {
-          content: [{ type: "text", text: JSON.stringify(results, null, 2) }],
+          content: [{ type: 'text', text: JSON.stringify(results, null, 2) }],
         };
       } catch (error) {
         return {
-          content: [{ type: "text", text: `Error searching plugins: ${error}` }],
+          content: [{ type: 'text', text: `Error searching plugins: ${error}` }],
           isError: true,
         };
       }
@@ -44,8 +44,8 @@ export function register(server: McpServer, client: HomebridgeClient): void {
   );
 
   server.tool(
-    "lookup_plugin",
-    "Get detailed information about a specific Homebridge plugin from the npm registry.",
+    'lookup_plugin',
+    'Get detailed information about a specific Homebridge plugin from the npm registry.',
     {
       pluginName: z
         .string()
@@ -55,11 +55,11 @@ export function register(server: McpServer, client: HomebridgeClient): void {
       try {
         const plugin = await client.lookupPlugin(pluginName);
         return {
-          content: [{ type: "text", text: JSON.stringify(plugin, null, 2) }],
+          content: [{ type: 'text', text: JSON.stringify(plugin, null, 2) }],
         };
       } catch (error) {
         return {
-          content: [{ type: "text", text: `Error looking up plugin: ${error}` }],
+          content: [{ type: 'text', text: `Error looking up plugin: ${error}` }],
           isError: true,
         };
       }
@@ -67,8 +67,8 @@ export function register(server: McpServer, client: HomebridgeClient): void {
   );
 
   server.tool(
-    "get_plugin_versions",
-    "Get available versions and dist-tags for a specific Homebridge plugin.",
+    'get_plugin_versions',
+    'Get available versions and dist-tags for a specific Homebridge plugin.',
     {
       pluginName: z
         .string()
@@ -78,11 +78,11 @@ export function register(server: McpServer, client: HomebridgeClient): void {
       try {
         const versions = await client.getPluginVersions(pluginName);
         return {
-          content: [{ type: "text", text: JSON.stringify(versions, null, 2) }],
+          content: [{ type: 'text', text: JSON.stringify(versions, null, 2) }],
         };
       } catch (error) {
         return {
-          content: [{ type: "text", text: `Error getting plugin versions: ${error}` }],
+          content: [{ type: 'text', text: `Error getting plugin versions: ${error}` }],
           isError: true,
         };
       }
@@ -90,8 +90,8 @@ export function register(server: McpServer, client: HomebridgeClient): void {
   );
 
   server.tool(
-    "get_plugin_config_schema",
-    "Get the config.schema.json for a plugin, which describes how to configure it in Homebridge.",
+    'get_plugin_config_schema',
+    'Get the config.schema.json for a plugin, which describes how to configure it in Homebridge.',
     {
       pluginName: z
         .string()
@@ -101,11 +101,11 @@ export function register(server: McpServer, client: HomebridgeClient): void {
       try {
         const schema = await client.getPluginConfigSchema(pluginName);
         return {
-          content: [{ type: "text", text: JSON.stringify(schema, null, 2) }],
+          content: [{ type: 'text', text: JSON.stringify(schema, null, 2) }],
         };
       } catch (error) {
         return {
-          content: [{ type: "text", text: `Error getting plugin config schema: ${error}` }],
+          content: [{ type: 'text', text: `Error getting plugin config schema: ${error}` }],
           isError: true,
         };
       }
@@ -113,8 +113,8 @@ export function register(server: McpServer, client: HomebridgeClient): void {
   );
 
   server.tool(
-    "get_plugin_changelog",
-    "Get the CHANGELOG.md content for an installed Homebridge plugin.",
+    'get_plugin_changelog',
+    'Get the CHANGELOG.md content for an installed Homebridge plugin.',
     {
       pluginName: z
         .string()
@@ -126,14 +126,14 @@ export function register(server: McpServer, client: HomebridgeClient): void {
         return {
           content: [
             {
-              type: "text",
-              text: typeof changelog === "string" ? changelog : JSON.stringify(changelog, null, 2),
+              type: 'text',
+              text: typeof changelog === 'string' ? changelog : JSON.stringify(changelog, null, 2),
             },
           ],
         };
       } catch (error) {
         return {
-          content: [{ type: "text", text: `Error getting plugin changelog: ${error}` }],
+          content: [{ type: 'text', text: `Error getting plugin changelog: ${error}` }],
           isError: true,
         };
       }

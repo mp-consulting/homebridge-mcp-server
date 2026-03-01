@@ -1,5 +1,5 @@
-import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import type { HomebridgeClient } from "./homebridge-client.js";
+import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import type { HomebridgeClient } from './homebridge-client.js';
 
 /**
  * Signature for tool registration functions.

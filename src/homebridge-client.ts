@@ -14,11 +14,17 @@ export class HomebridgeClient {
     const username = process.env.HOMEBRIDGE_USERNAME;
     const password = process.env.HOMEBRIDGE_PASSWORD;
 
-    if (!url) throw new Error("HOMEBRIDGE_URL environment variable is required");
-    if (!username) throw new Error("HOMEBRIDGE_USERNAME environment variable is required");
-    if (!password) throw new Error("HOMEBRIDGE_PASSWORD environment variable is required");
+    if (!url) {
+      throw new Error('HOMEBRIDGE_URL environment variable is required');
+    }
+    if (!username) {
+      throw new Error('HOMEBRIDGE_USERNAME environment variable is required');
+    }
+    if (!password) {
+      throw new Error('HOMEBRIDGE_PASSWORD environment variable is required');
+    }
 
-    this.baseUrl = url.replace(/\/+$/, "");
+    this.baseUrl = url.replace(/\/+$/, '');
     this.username = username;
     this.password = password;
   }
@@ -27,8 +33,8 @@ export class HomebridgeClient {
 
   private async authenticate(): Promise<void> {
     const res = await fetch(`${this.baseUrl}/api/auth/login`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username: this.username, password: this.password }),
     });
 
@@ -42,18 +48,22 @@ export class HomebridgeClient {
   }
 
   private async refreshToken(): Promise<boolean> {
-    if (!this.token) return false;
+    if (!this.token) {
+      return false;
+    }
 
     try {
       const res = await fetch(`${this.baseUrl}/api/auth/refresh`, {
-        method: "POST",
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
           Authorization: `Bearer ${this.token}`,
         },
       });
 
-      if (!res.ok) return false;
+      if (!res.ok) {
+        return false;
+      }
 
       const data = (await res.json()) as { access_token: string };
       this.token = data.access_token;
@@ -84,7 +94,7 @@ export class HomebridgeClient {
       };
 
       if (body !== undefined) {
-        headers["Content-Type"] = "application/json";
+        headers['Content-Type'] = 'application/json';
       }
 
       return fetch(`${this.baseUrl}${path}`, {
@@ -110,8 +120,8 @@ export class HomebridgeClient {
       throw new Error(`Homebridge API error ${res.status} ${method} ${path}: ${text}`);
     }
 
-    const contentType = res.headers.get("content-type") ?? "";
-    if (contentType.includes("application/json")) {
+    const contentType = res.headers.get('content-type') ?? '';
+    if (contentType.includes('application/json')) {
       return (await res.json()) as T;
     }
 
@@ -121,11 +131,11 @@ export class HomebridgeClient {
   // ── Accessories ─────────────────────────────────────────────────
 
   async getAccessories(): Promise<unknown[]> {
-    return this.request<unknown[]>("GET", "/api/accessories");
+    return this.request<unknown[]>('GET', '/api/accessories');
   }
 
   async getAccessoryLayout(): Promise<unknown> {
-    return this.request("GET", "/api/accessories/layout");
+    return this.request('GET', '/api/accessories/layout');
   }
 
   async setAccessoryCharacteristic(
@@ -133,7 +143,7 @@ export class HomebridgeClient {
     characteristicType: string,
     value: string | number | boolean,
   ): Promise<unknown> {
-    return this.request("PUT", `/api/accessories/${encodeURIComponent(uniqueId)}`, {
+    return this.request('PUT', `/api/accessories/${encodeURIComponent(uniqueId)}`, {
       characteristicType,
       value,
     });
@@ -142,72 +152,72 @@ export class HomebridgeClient {
   // ── Server / Status ─────────────────────────────────────────────
 
   async getHomebridgeStatus(): Promise<unknown> {
-    return this.request("GET", "/api/status/homebridge");
+    return this.request('GET', '/api/status/homebridge');
   }
 
   async getServerInformation(): Promise<unknown> {
-    return this.request("GET", "/api/status/server-information");
+    return this.request('GET', '/api/status/server-information');
   }
 
   async restartServer(): Promise<unknown> {
-    return this.request("PUT", "/api/server/restart");
+    return this.request('PUT', '/api/server/restart');
   }
 
   async getPairingInfo(): Promise<unknown> {
-    return this.request("GET", "/api/server/pairing");
+    return this.request('GET', '/api/server/pairing');
   }
 
   async getCachedAccessories(): Promise<unknown[]> {
-    return this.request<unknown[]>("GET", "/api/server/cached-accessories");
+    return this.request<unknown[]>('GET', '/api/server/cached-accessories');
   }
 
   async removeCachedAccessory(uuid: string): Promise<unknown> {
-    return this.request("DELETE", `/api/server/cached-accessories/${encodeURIComponent(uuid)}`);
+    return this.request('DELETE', `/api/server/cached-accessories/${encodeURIComponent(uuid)}`);
   }
 
   async resetCachedAccessories(): Promise<unknown> {
-    return this.request("PUT", "/api/server/reset-cached-accessories");
+    return this.request('PUT', '/api/server/reset-cached-accessories');
   }
 
   // ── Config ──────────────────────────────────────────────────────
 
   async getConfig(): Promise<unknown> {
-    return this.request("GET", "/api/config-editor");
+    return this.request('GET', '/api/config-editor');
   }
 
   async updateConfig(config: unknown): Promise<unknown> {
-    return this.request("POST", "/api/config-editor", config);
+    return this.request('POST', '/api/config-editor', config);
   }
 
   // ── Plugins ─────────────────────────────────────────────────────
 
   async getPlugins(): Promise<unknown[]> {
-    return this.request<unknown[]>("GET", "/api/plugins");
+    return this.request<unknown[]>('GET', '/api/plugins');
   }
 
   async searchPlugins(query: string): Promise<unknown[]> {
-    return this.request<unknown[]>("GET", `/api/plugins/search/${encodeURIComponent(query)}`);
+    return this.request<unknown[]>('GET', `/api/plugins/search/${encodeURIComponent(query)}`);
   }
 
   async lookupPlugin(pluginName: string): Promise<unknown> {
-    return this.request("GET", `/api/plugins/lookup/${encodeURIComponent(pluginName)}`);
+    return this.request('GET', `/api/plugins/lookup/${encodeURIComponent(pluginName)}`);
   }
 
   async getPluginVersions(pluginName: string): Promise<unknown> {
-    return this.request("GET", `/api/plugins/lookup/${encodeURIComponent(pluginName)}/versions`);
+    return this.request('GET', `/api/plugins/lookup/${encodeURIComponent(pluginName)}/versions`);
   }
 
   async getPluginConfigSchema(pluginName: string): Promise<unknown> {
-    return this.request("GET", `/api/plugins/config-schema/${encodeURIComponent(pluginName)}`);
+    return this.request('GET', `/api/plugins/config-schema/${encodeURIComponent(pluginName)}`);
   }
 
   async getPluginChangelog(pluginName: string): Promise<unknown> {
-    return this.request("GET", `/api/plugins/changelog/${encodeURIComponent(pluginName)}`);
+    return this.request('GET', `/api/plugins/changelog/${encodeURIComponent(pluginName)}`);
   }
 
   // ── Platform Tools ──────────────────────────────────────────────
 
   async getSystemInfo(): Promise<unknown> {
-    return this.request("GET", "/api/platform-tools/system-information");
+    return this.request('GET', '/api/platform-tools/system-information');
   }
 }

@@ -12,6 +12,8 @@
     "dev": "tsx src/index.ts",
     "test": "vitest run",
     "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "lint": "eslint . --max-warnings=0",
     "prepublishOnly": "npm run build"
   },
   "keywords": [
@@ -38,9 +40,13 @@
     "zod": "^3.24.2"
   },
   "devDependencies": {
-    "@types/node": "^22.13.5",
+    "@eslint/js": "^9.39.2",
+    "@types/node": "^24.0.0",
+    "@vitest/coverage-v8": "^4.0.18",
+    "eslint": "^9.39.2",
     "tsx": "^4.19.3",
-    "typescript": "^5.7.3",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.53.1",
     "vitest": "^4.0.18"
   },
   "engines": {
