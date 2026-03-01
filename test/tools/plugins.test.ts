@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from 'vitest';
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
-import type { HomebridgeClient } from '../../homebridge-client.js';
-import { register } from '../../tools/plugins.js';
+import type { HomebridgeClient } from '../../src/homebridge-client.js';
+import { register } from '../../src/tools/plugins.js';
 
 type ToolHandler = (args: Record<string, unknown>) => Promise<{ content: Array<{ type: string; text: string }>; isError?: boolean }>;
 
