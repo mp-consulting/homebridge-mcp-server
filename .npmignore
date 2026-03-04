@@ -1,0 +1,32 @@
+# Source
+src/
+
+# Development tools
+scripts/
+.claude/
+_bmad/
+_bmad-output/
+tmp/
+
+# Config
+.github/
+.gitignore
+tsconfig.json
+eslint.config.js
+vitest.config.ts
+nodemon.json
+CLAUDE.md
+
+# Test
+test/
+
+# IDE
+.idea/
+.vscode/
+.vscode-test/
+
+# npm
+*.tgz
+
+# macOS
+.DS_Store

@@ -1,3 +1,43 @@
-node_modules/
+# Compiled output
 dist/
+
+# Dependencies
+node_modules/
+
+# TypeScript
+*.tsbuildinfo
+
+# Coverage
+coverage/
+*.lcov
+
+# Debug dumps
+tmp/
+
+# Logs
+*.log
+
+# Environment
 .env
+.env.*
+
+# OS
+.DS_Store
+
+# IDE
+.idea/
+.vscode/
+.vscode-test/
+*.swp
+
+# npm
+*.tgz
+.npm
+.eslintcache
+
+# Claude Code
+.claude/
+
+# BMad agent files
+_bmad/
+_bmad-output/
